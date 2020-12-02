@@ -74,6 +74,16 @@ class endpoint {
 
 } } /// namespace eosio::jsonrpc
 
-FC_REFLECT_ENUM( eosio::jsonrpc::error_code, (undefined)(server_error)(parse_error)(invalid_request)(method_not_found)(invalid_params)(internal_error) )
+namespace fc {
+
+inline void from_variant(const variant& v, eosio::jsonrpc::error_code& c) {
+   c = static_cast<eosio::jsonrpc::error_code>(v.as_int64());
+}
+inline void to_variant(const eosio::jsonrpc::error_code& c, variant& v) {
+   v = variant(static_cast<int64_t>(c));
+}
+
+} /// namespace fc
+
 FC_REFLECT( eosio::jsonrpc::error, (code)(message)(data) )
 FC_REFLECT( eosio::jsonrpc::response, (jsonrpc)(result)(error)(id) )
